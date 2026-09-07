@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.12)
 project(net_ft_driver)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -7,6 +7,7 @@ endif()
 
 set(THIS_PACKAGE_INCLUDE_DEPENDS
   ament_cmake
+  asio_cmake_module
   ASIO
   CURLPP
   hardware_interface
@@ -42,9 +43,17 @@ target_include_directories(
   PRIVATE
   include
 )
-ament_target_dependencies(
-  ${PROJECT_NAME}
-  ${THIS_PACKAGE_INCLUDE_DEPENDS}
+
+set(ALL_TARGET_DEPENDS
+  hardware_interface::hardware_interface
+  pluginlib::pluginlib
+  rclcpp::rclcpp
+  rclcpp_lifecycle::rclcpp_lifecycle
+)
+
+target_link_libraries(
+  ${PROJECT_NAME} PUBLIC
+  ${ALL_TARGET_DEPENDS}
 )
 pluginlib_export_plugin_description_file(hardware_interface hardware_interface_plugin.xml)
 

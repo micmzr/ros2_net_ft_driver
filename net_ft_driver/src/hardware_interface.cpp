@@ -45,11 +45,13 @@ NetFtHardwareInterface::NetFtHardwareInterface()
 {
 }
 
-hardware_interface::CallbackReturn NetFtHardwareInterface::on_init(const hardware_interface::HardwareInfo& info)
+hardware_interface::CallbackReturn NetFtHardwareInterface::on_init(const hardware_interface::HardwareComponentInterfaceParams& params)
 {
-  if (hardware_interface::SensorInterface::on_init(info) != CallbackReturn::SUCCESS) {
+  if (hardware_interface::SensorInterface::on_init(params) != CallbackReturn::SUCCESS) {
     return hardware_interface::CallbackReturn::ERROR;
   }
+
+   auto info_ = params.hardware_info;
 
   ft_sensor_measurements_ = { { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 } };
   lost_packets_ = 0;

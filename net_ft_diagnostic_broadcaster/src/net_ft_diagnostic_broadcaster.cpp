@@ -107,10 +107,22 @@ void NetFTDiagnosticBroadcaster::publish_diagnostic()
   diag_array_.status.clear();
   diagnostic_updater::DiagnosticStatusWrapper diag_status;
 
-  auto packet_count = static_cast<uint32_t>(state_interfaces_[0].get_value());
-  auto lost_packets = static_cast<uint32_t>(state_interfaces_[1].get_value());
-  auto status = static_cast<uint32_t>(state_interfaces_[2].get_value());
-  auto out_of_order_count = static_cast<uint32_t>(state_interfaces_[3].get_value());
+  uint32_t packet_count = 0;
+  if (const auto value_opt = state_interfaces_[0].get_optional()) {
+    packet_count = static_cast<uint32_t>(*value_opt);
+  }
+  uint32_t lost_packets = 0;
+  if (const auto value_opt = state_interfaces_[1].get_optional()) {
+    lost_packets = static_cast<uint32_t>(*value_opt);
+  }
+  uint32_t status = 0;
+  if (const auto value_opt = state_interfaces_[2].get_optional()) {
+    status = static_cast<uint32_t>(*value_opt);
+  }
+  uint32_t out_of_order_count = 0;
+  if (const auto value_opt = state_interfaces_[3].get_optional()) {
+    out_of_order_count = static_cast<uint32_t>(*value_opt);
+  }
 
   if (last_packet_count_ == packet_count) {
     diag_status.mergeSummary(diagnostic_updater::DiagnosticStatusWrapper::ERROR, "No new data received!");

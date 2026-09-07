@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.12)
 project(net_ft_diagnostic_broadcaster)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -30,9 +30,20 @@ target_include_directories(
     PRIVATE
     include
 )
-ament_target_dependencies(
-  ${PROJECT_NAME}
-  ${THIS_PACKAGE_INCLUDE_DEPENDS}
+
+set(ALL_TARGET_DEPENDS
+    controller_interface::controller_interface
+    diagnostic_msgs::diagnostic_msgs
+    diagnostic_updater::diagnostic_updater
+    hardware_interface::hardware_interface
+    pluginlib::pluginlib
+    rclcpp::rclcpp
+    rclcpp_lifecycle::rclcpp_lifecycle
+)
+
+target_link_libraries(
+  ${PROJECT_NAME} PUBLIC
+  ${ALL_TARGET_DEPENDS}
 )
 
 pluginlib_export_plugin_description_file(controller_interface controller_plugins.xml)
