@@ -1,5 +1,7 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.30)
 project(net_ft_diagnostic_broadcaster)
+
+if(NOT WIN32)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -75,3 +77,7 @@ ament_export_libraries(
 )
 
 ament_package()
+
+else()
+  message(STATUS "Skipping ${PROJECT_NAME} because compilation is disabled on Windows.")
+endif()
